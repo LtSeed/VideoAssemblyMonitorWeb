@@ -13,7 +13,7 @@ interface TimelineEntry {
     node: PresetNode;
     rank: number;
     timestamp: Date;
-    quotaOfRank: number;
+    quota_of_rank: number;
 }
 
 interface TimelineModalProps {
@@ -65,7 +65,7 @@ const TimelineModal: React.FC<TimelineModalProps> = ({
             if (quotaAlreadyShown.includes(v.id.number)) return;
             quotaAlreadyShown.push(v.id.number);
             const oldVal = quotaOfRankMap.get(v.rank) || 0;
-            quotaOfRankMap.set(v.rank, oldVal + v.realQuota);
+            quotaOfRankMap.set(v.rank, oldVal + v.real_quota);
         });
 
         // Build timeline array
@@ -80,7 +80,7 @@ const TimelineModal: React.FC<TimelineModalProps> = ({
                 node: v,
                 rank: v.rank,
                 timestamp: new Date(timestampNum),
-                quotaOfRank: q
+                quota_of_rank: q
             });
         });
         setTimelineEntry(t);
@@ -130,7 +130,7 @@ const TimelineModal: React.FC<TimelineModalProps> = ({
                 const category = `${entry.node.id.number}. ${entry.node.name}`;
                 const stateLabel = language.review.timeline.offsetQuota;
                 const start = getHighestKeyOfLessRank(entry.timestamp.getTime(), entry.rank);
-                const end = new Date(entry.timestamp.getTime() + entry.quotaOfRank * 1000);
+                const end = new Date(entry.timestamp.getTime() + entry.quota_of_rank * 1000);
                 // Make sure start < end for chart
                 const rowStart = (start.getTime() < end.getTime()) ? start : end;
                 const rowEnd = (start.getTime() < end.getTime()) ? end : start;
@@ -160,7 +160,7 @@ const TimelineModal: React.FC<TimelineModalProps> = ({
                 const category = `${entry.node.id.number}. ${entry.node.name}`;
                 const stateLabel = language.review.timeline.standardQuota;
                 const start = new Date(t);
-                const end = new Date(t.getTime() + entry.node.realQuota * 1000);
+                const end = new Date(t.getTime() + entry.node.real_quota * 1000);
                 // Update t
                 t = end;
                 // Make sure start < end

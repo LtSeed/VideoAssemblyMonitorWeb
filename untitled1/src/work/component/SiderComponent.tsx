@@ -43,7 +43,6 @@ const SiderComponent: React.FC<SiderProps> = ({ progressBars }) => {
 
     // 每当 progressBars 变化时，查找未完成的进度条并判断其是否在可视区域内，如不在则自动滚动到该进度条
     useEffect(() => {
-        // 假设 worker 正在处理的进度条为第一个未完成的条目
         let activeIndex: string|number = '-1';
         let maxP = -1;
         for (const progressBarsKey in progressBars) {

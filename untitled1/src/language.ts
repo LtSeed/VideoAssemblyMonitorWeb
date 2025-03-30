@@ -115,6 +115,10 @@ export interface TextInterface {
         changedPresetName: string;
         oldModel: string;
         newModel: string;
+        applyModelPrompt: string;
+        selectModelPlaceholder: string;
+        applyButton: string;
+        noPresetSelected: string;
     };
 
     // New block for the “Review” or “Log” table and timeline
@@ -273,6 +277,10 @@ export const ChineseText: TextInterface = {
         changedPresetName: "Preset 名称",
         oldModel: "原模型",
         newModel: "新模型",
+        applyModelPrompt: "将所有选中的预设使用的模型修改为：",
+        selectModelPlaceholder: "选择模型",
+        applyButton: "提交",
+        noPresetSelected: "未选中预设"
     },
     review: {
         tableHeaders: {
@@ -416,6 +424,10 @@ export const EnglishText: TextInterface = {
         changedPresetName: "Preset Name",
         oldModel: "Old Model",
         newModel: "New Model",
+        applyModelPrompt: "Change the model for all selected presets to:",
+        selectModelPlaceholder: "Select a model",
+        applyButton: "Apply",
+        noPresetSelected: "No Preset selected"
     },
     review: {
         tableHeaders: {

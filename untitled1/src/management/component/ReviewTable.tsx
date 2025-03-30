@@ -15,15 +15,15 @@ export class StateMachineLogStrings {
     id: number;
     user: string;
     preset: string;
-    startTime: string;
-    endTime: string;
+    start_time: string;
+    end_time: string;
     duration: number;
 
     constructor(data: StateMachineLog) {
         this.id = data.id;
         this.preset = data.preset.name;
-        this.startTime = data.startTime.toString();
-        this.endTime = data.endTime.toString();
+        this.start_time = data.start_time.toString();
+        this.end_time = data.start_time.toString();
         this.user = data.user;
         this.duration = data.duration;
     }
@@ -130,17 +130,17 @@ const ReviewTable: React.FC = () => {
                 {/* Start Time */}
                 <Column<StateMachineLogStrings>
                     title={language.review.tableHeaders.startTime}
-                    dataIndex="startTime"
+                    dataIndex="start_time"
                     key="startTime"
-                    sorter={(a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime()}
+                    sorter={(a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime()}
                 />
 
                 {/* End Time */}
                 <Column<StateMachineLogStrings>
                     title={language.review.tableHeaders.endTime}
-                    dataIndex="endTime"
+                    dataIndex="end_time"
                     key="endTime"
-                    sorter={(a, b) => new Date(a.endTime).getTime() - new Date(b.endTime).getTime()}
+                    sorter={(a, b) => new Date(a.end_time).getTime() - new Date(b.end_time).getTime()}
                 />
 
                 {/* Duration */}

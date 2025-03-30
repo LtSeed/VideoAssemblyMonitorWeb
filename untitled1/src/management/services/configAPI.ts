@@ -22,7 +22,7 @@ export interface HostAndPort {
  */
 export interface QuotaConfig {
     quotas: SingleQuota[];
-    quotaMode: "avgOffset" | "confidence" | "disabled";
+    quota_mode: "avgOffset" | "confidence" | "disabled";
     // 这里可根据实际需求扩展更多字段
     // e.g. { "quota": number, "reason": string }
 
@@ -35,24 +35,24 @@ export interface SingleQuota {
 export interface SingleQuotaOfConf extends SingleQuota {
     proc: string;
     avg: string;
-    stdDev: string;
-    upBoundary: string;
-    downBoundary: string;
+    std_dev: string;
+    up_boundary: string;
+    down_boundary: string;
 }
 
 export interface SingleQuotaOfOffset extends SingleQuota {
     proc: string;
     quota: string;
-    upBoundary: string;
-    upRatio: string;
-    downBoundary: string;
-    downRatio: string;
+    up_boundary: string;
+    up_ratio: string;
+    down_boundary: string;
+    down_ratio: string;
 }
 
 export interface StepStats {
-    stepName: string;
-    averageTime: number;
-    stdDev: number;
+    step_name: string;
+    average_time: number;
+    std_dev: number;
 }
 
 /**
@@ -87,6 +87,19 @@ export async function getAllConfigs(): Promise<AllConfigs> {
     // 假设后端返回的是一个 JSON 字符串，需要手动 JSON.parse
     // 如果后端已经返回对象，可省略这一步
     return JSON.parse(response.data) as AllConfigs;
+}
+
+export async function fetchModels(): Promise<string[] | undefined> {
+    try {
+        const response = await fetch(host + "/config/model/all");
+        if (!response.ok) {
+            console.error(`HTTP error! status: ${response.status}`);
+            return [];
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Failed to fetch legal models:", error);
+    }
 }
 
 /**

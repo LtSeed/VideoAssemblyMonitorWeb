@@ -5,10 +5,10 @@
 //
 
 import React, {useEffect, useState} from "react";
-import { Table, Button, Modal, message } from "antd";
+import {Table, Button, Modal, message, Select} from "antd";
 import { useLanguage } from "../../LanguageContext";
 import { Typography } from 'antd';
-import {getAllConfigs, updateUseModelPreset} from "../services/configAPI.ts";
+import {fetchModels, getAllConfigs, updateUseModelPreset} from "../services/configAPI.ts";
 import {host} from "../../Share.tsx";
 
 const { Title } = Typography;
@@ -16,7 +16,7 @@ const { Title } = Typography;
 interface PresetModelData {
     key: string;
     name: string;
-    currentModel: "eoid" | "yolo" | "Eoid" | "Yolo" | "";
+    currentModel: string;
 }
 
 export const ModelSettingsPage: React.FC = () => {
@@ -34,6 +34,9 @@ export const ModelSettingsPage: React.FC = () => {
     const [applyChanges, setApplyChanges] = useState<
         { presetName: string; oldModel: string; newModel: string }[]
     >([]);
+
+    const [modelList, setModelList] = useState<string[]>([]);
+    const [selectedModel, setSelectedModel] = useState<string>("");
 
 
     useEffect(() => {
@@ -69,6 +72,13 @@ export const ModelSettingsPage: React.FC = () => {
                     console.error("Failed to fetch presets:", error);
                 }
             });
+            fetchModels().then((models)=>{
+                if (models == undefined) return;
+                setModelList(models);
+                if (models.length > 0) {
+                    setSelectedModel(models[0]); // 默认选中第一个模型
+                }
+            })
         }
         fetchPresets();
 
@@ -114,27 +124,16 @@ export const ModelSettingsPage: React.FC = () => {
         setSelectedRowKeys(newSelected);
     };
 
-    // 应用到 Eoid
-    const handleApplyEoid = () => {
-        if (selectedRowKeys.length === 0) {
-            message.warning("No Preset selected");
-            return;
-        }
-        const changes = data
-            .filter((d) => selectedRowKeys.includes(d.key))
-            .map((d) => ({
-                presetName: d.name,
-                oldModel: d.currentModel,
-                newModel: "eoid",
-            }));
-        setApplyChanges(changes);
-        setApplyModalVisible(true);
+
+    // 当下拉框改变时
+    const handleModelSelect = (value: string) => {
+        setSelectedModel(value);
     };
 
-    // 应用到 YOLO
-    const handleApplyYolo = () => {
+    // 应用所选模型到所有选中的预设
+    const handleApplyModel = () => {
         if (selectedRowKeys.length === 0) {
-            message.warning("No Preset selected");
+            message.warning(language.model.noPresetSelected);
             return;
         }
         const changes = data
@@ -142,7 +141,7 @@ export const ModelSettingsPage: React.FC = () => {
             .map((d) => ({
                 presetName: d.name,
                 oldModel: d.currentModel,
-                newModel: "yolo",
+                newModel: selectedModel,
             }));
         setApplyChanges(changes);
         setApplyModalVisible(true);
@@ -205,10 +204,22 @@ export const ModelSettingsPage: React.FC = () => {
                 <Button onClick={handleInvertSelect} style={{ marginRight: 24 }}>
                     {language.model.invertSelectButton}
                 </Button>
-                <Button onClick={handleApplyEoid} style={{ marginRight: 24 }}>
-                    {language.model.applyEoidButton}
+                <span>{language.model.applyModelPrompt}</span>
+                <Select
+                    placeholder={language.model.selectModelPlaceholder}
+                    value={selectedModel}
+                    onChange={handleModelSelect}
+                    style={{ width: 400, marginLeft: 8, marginRight: 8 }}
+                >
+                    {modelList.map((model) => (
+                        <Select.Option key={model} value={model}>
+                            {model}
+                        </Select.Option>
+                    ))}
+                </Select>
+                <Button onClick={handleApplyModel}>
+                    {language.model.applyButton}
                 </Button>
-                <Button onClick={handleApplyYolo}>{language.model.applyYoloButton}</Button>
             </div>
 
             <Table

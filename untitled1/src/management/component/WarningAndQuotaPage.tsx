@@ -19,16 +19,16 @@ import {host} from "../../Share.tsx";
 const { Title } = Typography;
 
 interface QuotaRow {
-    stepName: string;
+    step_name: string;
     quota: number;
-    upPercent: number;
-    downPercent: number;
+    up_percent: number;
+    down_percent: number;
 }
 
 interface ConfidenceRow {
-    stepName: string;
-    averageTime: number;
-    stdDev: number;
+    step_name: string;
+    average_time: number;
+    std_dev: number;
     upper: number; // 接受上界
     lower: number; // 接受下界
 }
@@ -101,21 +101,21 @@ export const WarningAndQuotaPage: React.FC = () => {
 
         // 更新 quotaData（如果之前没有导入过，则初始化）
         const newQuotaData: QuotaRow[] = mockStats.map((s) => ({
-            stepName: s.stepName,
-            quota: s.averageTime,
-            upPercent: 10,
-            downPercent: 10,
+            step_name: s.step_name,
+            quota: s.average_time,
+            up_percent: 10,
+            down_percent: 10,
         }));
         setQuotaData(newQuotaData);
 
         // 更新 confidenceData
         const factor = getZScoreFromConfidence(confidence);
         const newConfidenceData: ConfidenceRow[] = mockStats.map((s) => ({
-            stepName: s.stepName,
-            averageTime: s.averageTime,
-            stdDev: s.stdDev,
-            upper: s.averageTime + factor * s.stdDev,
-            lower: s.averageTime - factor * s.stdDev,
+            step_name: s.step_name,
+            average_time: s.average_time,
+            std_dev: s.std_dev,
+            upper: s.average_time + factor * s.std_dev,
+            lower: s.average_time - factor * s.std_dev,
         }));
         setConfidenceData(newConfidenceData);
     };
@@ -137,9 +137,9 @@ export const WarningAndQuotaPage: React.FC = () => {
             return;
         }
         const newQuotaData = quotaData.map((row) => {
-            const matchedStat = statsData.find((s) => s.stepName === row.stepName);
+            const matchedStat = statsData.find((s) => s.step_name === row.step_name);
             if (matchedStat) {
-                return { ...row, quota: matchedStat.averageTime };
+                return { ...row, quota: matchedStat.average_time };
             }
             return row;
         });
@@ -171,11 +171,11 @@ export const WarningAndQuotaPage: React.FC = () => {
     const handleSetConfidence = () => {
         const factor = getZScoreFromConfidence(confidence);
         const newConfidenceData = statsData.map((s) => ({
-            stepName: s.stepName,
-            averageTime: s.averageTime,
-            stdDev: s.stdDev,
-            upper: s.averageTime + factor * s.stdDev,
-            lower: s.averageTime - factor * s.stdDev,
+            step_name: s.step_name,
+            average_time: s.average_time,
+            std_dev: s.std_dev,
+            upper: s.average_time + factor * s.std_dev,
+            lower: s.average_time - factor * s.std_dev,
         }));
         setConfidenceData(newConfidenceData);
     };
@@ -190,38 +190,38 @@ export const WarningAndQuotaPage: React.FC = () => {
         try {
             let qc: QuotaConfig;
             if (quotaMode === "disabled") {
-                qc = { quotaMode: quotaMode, quotas: [] };
+                qc = { quota_mode: quotaMode, quotas: [] };
             } else if (quotaMode === "avgOffset") {
                 const quotas: SingleQuotaOfOffset[] = [];
                 for (const row of quotaData) {
                     quotas.push({
-                        proc: row.stepName,
+                        proc: row.step_name,
                         quota: row.quota.toString(),
-                        downRatio: row.downPercent.toString(),
-                        upRatio: row.upPercent.toString(),
-                        downBoundary: (row.quota * (1 - row.downPercent / 100)).toFixed(2),
-                        upBoundary: (row.quota * (1 + row.upPercent / 100)).toFixed(2),
+                        down_ratio: row.down_percent.toString(),
+                        up_ratio: row.up_percent.toString(),
+                        down_boundary: (row.quota * (1 - row.down_percent / 100)).toFixed(2),
+                        up_boundary: (row.quota * (1 + row.up_percent / 100)).toFixed(2),
                         type: "offset",
                     });
                 }
                 qc = {
-                    quotaMode: "avgOffset",
+                    quota_mode: "avgOffset",
                     quotas: quotas,
                 };
             } else {
                 const quotas: SingleQuotaOfConf[] = [];
                 for (const row of confidenceData) {
                     quotas.push({
-                        avg: row.averageTime.toString(),
-                        stdDev: row.stdDev.toString(),
-                        proc: row.stepName,
-                        upBoundary: row.upper.toFixed(2),
-                        downBoundary: row.lower.toFixed(2),
+                        avg: row.average_time.toString(),
+                        std_dev: row.std_dev.toString(),
+                        proc: row.step_name,
+                        up_boundary: row.upper.toFixed(2),
+                        down_boundary: row.lower.toFixed(2),
                         type: "conf",
                     });
                 }
                 qc = {
-                    quotaMode: "confidence",
+                    quota_mode: "confidence",
                     quotas: quotas,
                 };
             }
@@ -259,7 +259,7 @@ export const WarningAndQuotaPage: React.FC = () => {
                     value={record.quota}
                     onChange={(val) => {
                         if (val !== null) {
-                            updateQuotaRow(record.stepName, "quota", val);
+                            updateQuotaRow(record.step_name, "quota", val);
                         }
                     }}
                 />
@@ -279,10 +279,10 @@ export const WarningAndQuotaPage: React.FC = () => {
             render: (_: number, record: QuotaRow) => (
                 <InputNumber
                     min={0}
-                    value={record.upPercent}
+                    value={record.up_percent}
                     onChange={(val) => {
                         if (val !== null) {
-                            updateQuotaRow(record.stepName, "upPercent", val);
+                            updateQuotaRow(record.step_name, "up_percent", val);
                         }
                     }}
                 />
@@ -292,7 +292,7 @@ export const WarningAndQuotaPage: React.FC = () => {
             title: language.warningAndQuota.upBoundaryTime,
             key: "upBoundary",
             render: (_: number, record: QuotaRow) => {
-                const upBoundary = record.quota * (1 + record.upPercent / 100);
+                const upBoundary = record.quota * (1 + record.up_percent / 100);
                 return upBoundary.toFixed(2);
             },
         },
@@ -310,10 +310,10 @@ export const WarningAndQuotaPage: React.FC = () => {
             render: (_: number, record: QuotaRow) => (
                 <InputNumber
                     min={0}
-                    value={record.downPercent}
+                    value={record.down_percent}
                     onChange={(val) => {
                         if (val !== null) {
-                            updateQuotaRow(record.stepName, "downPercent", val);
+                            updateQuotaRow(record.step_name, "down_percent", val);
                         }
                     }}
                 />
@@ -323,7 +323,7 @@ export const WarningAndQuotaPage: React.FC = () => {
             title: language.warningAndQuota.downBoundaryTime,
             key: "downBoundary",
             render: (_: number, record: QuotaRow) => {
-                const downBoundary = record.quota * (1 - record.downPercent / 100);
+                const downBoundary = record.quota * (1 - record.down_percent / 100);
                 return downBoundary.toFixed(2);
             },
         },
@@ -335,7 +335,7 @@ export const WarningAndQuotaPage: React.FC = () => {
         value: number
     ) => {
         const updated = quotaData.map((row) => {
-            if (row.stepName === stepName) {
+            if (row.step_name === stepName) {
                 return { ...row, [field]: value };
             }
             return row;
@@ -451,9 +451,9 @@ export const WarningAndQuotaPage: React.FC = () => {
                     ]}
                     dataSource={statsData.map((s, idx) => ({
                         key: idx,
-                        stepName: s.stepName,
-                        averageTime: s.averageTime,
-                        stdDev: s.stdDev,
+                        stepName: s.step_name,
+                        averageTime: s.average_time,
+                        stdDev: s.std_dev,
                     }))}
                     pagination={false}
                     size="small"

@@ -54,7 +54,7 @@ function PresetTable() {
         },
         {
             title: language.presetTable?.columns.realQuota || "Real Quota",
-            dataIndex: "realQuota",
+            dataIndex: "real_quota",
             key: "realQuota",
             width: 120,
         },

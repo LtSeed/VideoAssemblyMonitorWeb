@@ -5,27 +5,27 @@ import {useLanguage} from "../../LanguageContext.tsx"; // Adjust the import base
 
 // types.ts
 export interface SystemInfoDto {
-    cpuUsage: number;
-    totalMemory: number;
-    usedMemory: number;
-    committedVirtualMemory: number;
-    totalSwapSpace: number;
-    freeSwapSpace: number;
-    systemLoadAverage: number;
-    diskTotal: number;
-    diskFree: number;
-    diskUsed: number;
+    cpu_usage: number;
+    total_memory: number;
+    used_memory: number;
+    committed_virtual_memory: number;
+    total_swap_space: number;
+    free_swap_space: number;
+    system_load_average: number;
+    disk_total: number;
+    disk_free: number;
+    disk_used: number;
 }
 
 export interface JvmInfoDto {
-    heapUsed: number;
-    heapMax: number;
-    nonHeapUsed: number;
-    threadCount: number;
-    peakThreadCount: number;
-    loadedClassCount: number;
-    totalLoadedClassCount: number;
-    unloadedClassCount: number;
+    heap_used: number;
+    heap_max: number;
+    non_heap_used: number;
+    thread_count: number;
+    peak_thread_count: number;
+    loaded_class_count: number;
+    total_loaded_class_count: number;
+    unloaded_class_count: number;
 }
 
 const SystemMonitoring: React.FC = () => {
@@ -37,6 +37,7 @@ const SystemMonitoring: React.FC = () => {
         fetch(host + '/management/system-info')
             .then((res) => res.json())
             .then((data: SystemInfoDto) => {
+                console.log(data);
                 setSystemInfo(data);
             })
             .catch((err) => {
@@ -68,10 +69,10 @@ const SystemMonitoring: React.FC = () => {
         return <div>{languageData.language.common.loadingChart}</div>;
     }
 
-    const cpuUsagePercent = (systemInfo.cpuUsage * 100).toFixed(2);
-    const memoryUsagePercent = ((systemInfo.usedMemory / systemInfo.totalMemory) * 100).toFixed(2);
-    const diskUsagePercent = ((systemInfo.diskUsed / systemInfo.diskTotal) * 100).toFixed(2);
-    const heapUsagePercent = ((jvmInfo.heapUsed / jvmInfo.heapMax) * 100).toFixed(2);
+    const cpuUsagePercent = (systemInfo.cpu_usage * 100).toFixed(2);
+    const memoryUsagePercent = ((systemInfo.used_memory / systemInfo.total_memory) * 100).toFixed(2);
+    const diskUsagePercent = ((systemInfo.disk_used / systemInfo.disk_total) * 100).toFixed(2);
+    const heapUsagePercent = ((jvmInfo.heap_used / jvmInfo.heap_max) * 100).toFixed(2);
 
     return (
         <div style={{ padding: 24, textAlign: 'left' }}>
@@ -96,7 +97,7 @@ const SystemMonitoring: React.FC = () => {
                     <Card title={languageData.language.systemStatus.systemMemory}>
                         <Statistic
                             title={languageData.language.systemStatus.totalMemory}
-                            value={(systemInfo.totalMemory / 1024 / 1024).toFixed(2)}
+                            value={(systemInfo.total_memory / 1024 / 1024).toFixed(2)}
                             suffix="MB"
                             style={{
                                 marginBottom: 16,
@@ -104,7 +105,7 @@ const SystemMonitoring: React.FC = () => {
                         />
                         <Statistic
                             title={languageData.language.systemStatus.usedMemory}
-                            value={(systemInfo.usedMemory / 1024 / 1024).toFixed(2)}
+                            value={(systemInfo.used_memory / 1024 / 1024).toFixed(2)}
                             suffix="MB"
                             style={{
                                 marginBottom: 16,
@@ -122,7 +123,7 @@ const SystemMonitoring: React.FC = () => {
                     <Card title={languageData.language.systemStatus.diskUsage}>
                         <Statistic
                             title={languageData.language.systemStatus.diskTotal}
-                            value={(systemInfo.diskTotal / 1024 / 1024 / 1024).toFixed(2)}
+                            value={(systemInfo.disk_total / 1024 / 1024 / 1024).toFixed(2)}
                             suffix="GB"
                             style={{
                                 marginBottom: 16,
@@ -130,7 +131,7 @@ const SystemMonitoring: React.FC = () => {
                         />
                         <Statistic
                             title={languageData.language.systemStatus.diskUsed}
-                            value={(systemInfo.diskUsed / 1024 / 1024 / 1024).toFixed(2)}
+                            value={(systemInfo.disk_used / 1024 / 1024 / 1024).toFixed(2)}
                             suffix="GB"
                             style={{
                                 marginBottom: 16,
@@ -150,7 +151,7 @@ const SystemMonitoring: React.FC = () => {
                     <Card title={languageData.language.systemStatus.jvmHeap}>
                         <Statistic
                             title={languageData.language.systemStatus.maxHeapMemory}
-                            value={(jvmInfo.heapMax / 1024 / 1024).toFixed(2)}
+                            value={(jvmInfo.heap_max / 1024 / 1024).toFixed(2)}
                             suffix="MB"
                             style={{
                                 marginBottom: 16,
@@ -158,7 +159,7 @@ const SystemMonitoring: React.FC = () => {
                         />
                         <Statistic
                             title={languageData.language.systemStatus.usedHeapMemory}
-                            value={(jvmInfo.heapUsed / 1024 / 1024).toFixed(2)}
+                            value={(jvmInfo.heap_used / 1024 / 1024).toFixed(2)}
                             suffix="MB"
                             style={{
                                 marginBottom: 16,
@@ -178,8 +179,8 @@ const SystemMonitoring: React.FC = () => {
                             style={{
                                 marginBottom: 16,
                             }}
-                            title={languageData.language.systemStatus.activeThreadCount} value={jvmInfo.threadCount} />
-                        <Statistic title={languageData.language.systemStatus.peakThreadCount} value={jvmInfo.peakThreadCount} />
+                            title={languageData.language.systemStatus.activeThreadCount} value={jvmInfo.thread_count} />
+                        <Statistic title={languageData.language.systemStatus.peakThreadCount} value={jvmInfo.peak_thread_count} />
                     </Card>
                 </Col>
 
@@ -188,21 +189,21 @@ const SystemMonitoring: React.FC = () => {
                     <Card title={languageData.language.systemStatus.jvmClassLoading}>
                         <Statistic
                             title={languageData.language.systemStatus.loadedClassCount}
-                            value={jvmInfo.loadedClassCount}
+                            value={jvmInfo.loaded_class_count}
                             style={{
                                 marginBottom: 16,
                             }}
                         />
                         <Statistic
                             title={languageData.language.systemStatus.totalLoadedClassCount}
-                            value={jvmInfo.totalLoadedClassCount}
+                            value={jvmInfo.total_loaded_class_count}
                             style={{
                                 marginBottom: 16,
                             }}
                         />
                         <Statistic
                             title={languageData.language.systemStatus.unloadedClassCount}
-                            value={jvmInfo.unloadedClassCount}
+                            value={jvmInfo.unloaded_class_count}
                         />
                     </Card>
                 </Col>
