@@ -42,6 +42,14 @@ interface TimelineModalProps {
 
 /**
  * 包含Timeline的Modal
+ *
+ *                         // 第一个圈圈：指示在理论上的该工序执行时间内，工序的执行情况，
+ *                         //      蓝色为Quota所占时间，即蓝色越多，工序的理论执行时间内Handling时间越短。
+ *                         //      绿色为实际工作所占时间。正常来说，绿色应该完全覆盖蓝色，指示在理论上该工序的执行时间内，实际工作时间约等于Quota时间。
+ *                         //      若绿色很少，蓝色很多的话，说明实际工作时间基本不在理论上该工序的执行时间内，指示工序执行时间过低，或者执行时机错误。
+ *                         // 第二个圈圈：指示该工序的实际上的执行时间段内，工序的执行情况，
+ *                         //      蓝色为在偏置quota中实际工作的时间占所有实际执行时间段的比例（不含Handling），若没有满，说明在该时间段内，有其他工序被执行。
+ *                         //
  */
 const TimelineModal: React.FC<TimelineModalProps> = ({
                                                          isOpen,
@@ -387,19 +395,25 @@ const TimelineModal: React.FC<TimelineModalProps> = ({
               size: A4 landscape;
               margin: 15mm;
             }
-            body {
+            html, body {
               font-family: Arial, sans-serif;
+              background-color: white !important; /* Force white background */
+              margin: 0;
+              padding: 0;
             }
-            * {
-              animation: none !important;
-              transition: none !important;
+            rep {
+              background-color: white !important; /* Ensure white background for report elements */
             }
-             @media print {
-              .ant-progress-bg {
-                background: #52c41a !important; /* 简化为纯色 */
-                background-image: none !important;
-              }
+            h2 {
+              color: black !important; /* Force black color for h2 text */
             }
+            h3 {
+              color: black !important; /* Force black color for h2 text */
+            }
+            p {
+              color: black !important; /* Force black color for h2 text */
+            }
+        }
         `,
     });
     // 导出 PDF 的回调：使用 jsPDF 将 reportRef 内的内容导出为 A4 大小 PDF
@@ -482,7 +496,7 @@ const TimelineModal: React.FC<TimelineModalProps> = ({
         }
 
         return (
-            <div><ConfigProvider>
+            <div className="rep"><ConfigProvider>
                 {nodeArray.map((info, idx) => {
                     const node = info.node;
                     const usageTime = info.usageTime;
@@ -519,13 +533,7 @@ const TimelineModal: React.FC<TimelineModalProps> = ({
                             green2 = Math.min(1, (timeAnalysis[node.id.number - 1][3] / timeAnalysis[node.id.number - 1][5])) * Math.min(1, blue2)
                         }
 
-                        // 第一个圈圈：指示在理论上的该工序执行时间内，工序的执行情况，
-                        //      蓝色为Quota所占时间，即蓝色越多，工序的理论执行时间内Handling时间越短。
-                        //      绿色为实际工作所占时间。正常来说，绿色应该完全覆盖蓝色，指示在理论上该工序的执行时间内，实际工作时间约等于Quota时间。
-                        //      若绿色很少，蓝色很多的话，说明实际工作时间基本不在理论上该工序的执行时间内，指示工序执行时间过低，或者执行时机错误。
-                        // 第二个圈圈：指示该工序的实际上的执行时间段内，工序的执行情况，
-                        //      蓝色为在偏置quota中实际工作的时间占所有实际执行时间段的比例（不含Handling），若没有满，说明在该时间段内，有其他工序被执行。
-                        //
+
                         return (
                             <div key={node.id.number} style={{ marginBottom: 16, }}>
                                 <Row>
@@ -644,7 +652,15 @@ const TimelineModal: React.FC<TimelineModalProps> = ({
                             </div>
                         );
                     }
-                )}</ConfigProvider>
+                )}
+                <div style={{ marginTop: 32, padding: 20, borderTop: '1px solid #ddd' }}>
+                    <h3>{language.review.timeline.progressExplanationTitle}</h3>
+                    <p>{language.review.timeline.offsetProgressExplanation}</p>
+                    <p>{language.review.timeline.standardProgressExplanation}</p>
+                    <p>{language.review.timeline.blueGreenExplanation}</p>
+                    <p>{language.review.timeline.summaryExplanation}</p>
+                </div>
+            </ConfigProvider>
             </div>
         );
     });
@@ -678,11 +694,13 @@ const TimelineModal: React.FC<TimelineModalProps> = ({
                     </Radio.Button>
                 </Radio.Group>
                 {mode === 'report' && (
-                    <Button
-                        type="primary"
-                        style={{ marginLeft: 40 }}
-                        onClick={handleExportPDF}
-                    >{language.review.timeline.exportToPDF}</Button>
+                    <Tooltip title={language.review.timeline.exportBackgroundGraphMessage}>
+                        <Button
+                            type="primary"
+                            style={{ marginLeft: 40 }}
+                            onClick={handleExportPDF}
+                        >{language.review.timeline.exportToPDF}</Button>
+                    </Tooltip>
                 )}
             </div>
 
@@ -712,7 +730,7 @@ const TimelineModal: React.FC<TimelineModalProps> = ({
                     /></div>
                 )
             }
-            <div ref={reportRef}>
+            <div ref={reportRef} className="rep">
                 {mode === 'report' && <RenderReport/>}
             </div>
         </Modal>

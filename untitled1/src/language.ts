@@ -136,6 +136,12 @@ export interface TextInterface {
             viewInChart: string;
         };
         timeline: {
+            summaryExplanation: string;
+            blueGreenExplanation: string;
+            standardProgressExplanation: string;
+            offsetProgressExplanation: string;
+            progressExplanationTitle: string;
+            exportBackgroundGraphMessage: string;
             exportToPDF: string;
             procNotFound: string;
             totalTimeout: string;
@@ -338,7 +344,22 @@ export const ChineseText: TextInterface = {
             orderIsAcceptable: "顺序可接受",
             orderIsNotAcceptable: "顺序不符合",
             executionOrderLabel: "执行顺序：",
-            exportToPDF: "导出到PDF"
+            exportToPDF: "导出到PDF",
+            exportBackgroundGraphMessage: "导出时，请勾选 \"背景图形\"",
+            progressExplanationTitle: "进度条说明",
+            offsetProgressExplanation: "1. 偏移进度条：\n" +
+                "蓝色部分：表示在 \"偏移\" 时间段内实际工作的进展。此为在 \"偏移配额\" 期间实际工作的时间，不包括任何处理或延迟。\n" +
+                "绿色部分：表示在 \"标准\" 配额期间实际工作的进展。绿色部分反映了与节点标准配额相比已完成的工作量。绿色部分越大，过程越接近满足标准配额。",
+            standardProgressExplanation: "2. 标准进度条：\n" +
+                "蓝色部分：表示在节点的标准配额期间实际工作的进展。与偏移进度条的蓝色部分类似，但着重于标准配额的时间。\n" +
+                "绿色部分：表示在预期或计算配额内完成的工作量，考虑到处理时间。这是通过已完成的工作总时长和总标准配额计算的，包括处理或额外时间的调整。",
+            blueGreenExplanation: "指标与含义：\n" +
+                "蓝色部分（在偏移和标准进度条中）提供了关于已完成所需工作的视觉提示，仅考虑落在 \"实际\" 工作时间内的工作部分。\n" +
+                "绿色部分显示相对于整体预期时间（无论是节点的标准配额还是偏移配额）已完成的工作量。绿色部分越大，表示过程按预期或 \"标准\" 进度推进，而较小或缺失的绿色部分则可能表示延迟或低效。",
+            summaryExplanation: "总结：\n" +
+                "蓝色部分：显示在相应配额期间完成的工作。\n" +
+                "绿色部分：显示在计算的配额内完成的工作量，表明效率和与预期的一致性。\n" +
+                "通过跟踪这些颜色段，报告提供了关于每个节点在工作流中的时间和效率的见解。"
         }
     }
 };
@@ -503,7 +524,22 @@ export const TraditionalChineseText: TextInterface = {
             orderIsAcceptable: "順序可接受",
             orderIsNotAcceptable: "順序不符合",
             executionOrderLabel: "執行順序：",
-            exportToPDF: "匯出為 PDF"
+            exportToPDF: "匯出為 PDF",
+            exportBackgroundGraphMessage: "導出時，請勾選 \"背景圖\" 復選框。",
+            progressExplanationTitle: "進度條說明",
+            offsetProgressExplanation: "1. 偏移進度條：\n" +
+                "藍色部分：表示在 \"偏移\" 時間段內實際工作的進展。此為在 \"偏移配額\" 期間實際工作的時間，不包括任何處理或延遲。\n" +
+                "綠色部分：表示在 \"標準\" 配額期間實際工作的進展。綠色部分反映了與節點標準配額相比已完成的工作量。綠色部分越大，過程越接近滿足標準配額。",
+            standardProgressExplanation: "2. 標準進度條：\n" +
+                "藍色部分：表示在節點的標準配額期間實際工作的進展。與偏移進度條的藍色部分類似，但著重於標準配額的時間。\n" +
+                "綠色部分：表示在預期或計算配額內完成的工作量，考慮到處理時間。這是通過已完成的工作總時長和總標準配額計算的，包括處理或額外時間的調整。",
+            blueGreenExplanation: "指標與含義：\n" +
+                "藍色部分（在偏移和標準進度條中）提供了關於已完成所需工作的視覺提示，僅考慮落在 \"實際\" 工作時間內的工作部分。\n" +
+                "綠色部分顯示相對於整體預期時間（無論是節點的標準配額還是偏移配額）已完成的工作量。綠色部分越大，表示過程按預期或 \"標準\" 進度推進，而較小或缺失的綠色部分則可能表示延遲或低效。",
+            summaryExplanation: "總結：\n" +
+                "藍色部分：顯示在相應配額期間完成的工作。\n" +
+                "綠色部分：顯示在計算的配額內完成的工作量，表明效率和與預期的一致性。\n" +
+                "通過跟蹤這些顏色段，報告提供了關於每個節點在工作流中的時間和效率的見解。"
         }
     }
 };
@@ -668,7 +704,24 @@ export const EnglishText: TextInterface = {
             orderIsAcceptable: "Order Acceptable",
             orderIsNotAcceptable: "Order Not Acceptable",
             executionOrderLabel: "Execution Order: ",
-            exportToPDF: "export to PDF"
+            exportToPDF: "export to PDF",
+            exportBackgroundGraphMessage: "Please check the \"Background Graph\" when exporting.",
+            progressExplanationTitle: "Progress Bar Explanation",
+            offsetProgressExplanation: "1. Offset Progress Bar:\n" +
+                "Blue portion: Represents the progress of the real work that occurs during the \"Offset\" time segment. This is the time spent working on the node during its \"offset quota\" period, excluding any handling or delays.\n" +
+                "Green portion: Indicates the progress of the real work that happens within the \"Standard\" quota period. The green portion reflects the amount of work done compared to the standard quota for the node. The higher the green portion, the closer the process is to meeting the standard quota.",
+            standardProgressExplanation: "2. Standard Progress Bar:\n" +
+                "Blue portion: Represents the progress of real work during the standard quota period for the node. This is similar to the blue part of the Offset bar but focuses on the standard quota time.\n" +
+                "Green portion: Indicates how much of the work has been completed within the expected or calculated quota, factoring in the handling time. This is calculated using the total duration of work done and the total standard quota, including adjustments for handling or extra time.",
+            blueGreenExplanation: "Indicators and Meaning:\n" +
+                "Blue segments (in both the Offset and Standard progress bars) provide a visual cue of how much of the required work has been done, considering only the work portion that falls within the \"actual\" work time.\n" +
+                "Green segments show how much work has been completed, relative to the overall expected time (whether the node's standard quota or offset quota). A larger green segment means the process is progressing according to the expected or \"standard\" rate, whereas smaller or missing green segments may indicate delays or inefficiency.",
+            summaryExplanation: "Summary:\n" +
+                "Blue Sections: Show work done during the respective quota period.\n" +
+                "Green Sections: Show how much of the work has been completed within the calculated quota, indicating efficiency and alignment with expectations.\n" +
+                "By tracking these colored segments, the report provides insights into both the timing and efficiency of the assembly process for each node in the workflow."
+
+
         }
     }
 };
@@ -819,7 +872,24 @@ export const JapaneseText: TextInterface = {
             orderIsAcceptable: "順序可",
             orderIsNotAcceptable: "順序不可",
             executionOrderLabel: "実行順序：",
-            exportToPDF: "PDFにエクスポート"
+            exportToPDF: "PDFにエクスポート",
+            exportBackgroundGraphMessage: "エクスポート時に「背景グラフ」のチェックボックスを選択してください。",
+            progressExplanationTitle: "進捗バーの説明",
+            offsetProgressExplanation: "1. オフセット進捗バー：\n" +
+                "青色部分：\"オフセット\" 時間帯内で実際に行われた作業の進捗を示します。これは \"オフセット配分\" 期間中の作業時間で、処理や遅延は含まれません。\n" +
+                "緑色部分：\"標準\" 配分期間内で行われた実作業の進捗を示します。緑色部分は、ノードの標準配分と比較してどれだけ作業が進んだかを示します。緑色部分が大きいほど、プロセスが標準配分に近づいています。",
+            standardProgressExplanation: "2. 標準進捗バー：\n" +
+                "青色部分：ノードの標準配分期間中の実際の作業の進捗を示します。これはオフセットバーの青色部分に似ていますが、標準配分の時間に焦点を当てています。\n" +
+                "緑色部分：予想または計算された配分内で完了した作業量を示します。処理時間も考慮に入れます。これは、完了した作業の合計時間と標準配分を使って計算されます。",
+            blueGreenExplanation: "指標と意味：\n" +
+                "青色部分（オフセットおよび標準進捗バーの両方）は、実際の作業時間内で完了した作業量を示す視覚的な手がかりを提供します。\n" +
+                "緑色部分は、全体の予想時間（ノードの標準配分またはオフセット配分）に対してどれだけ作業が完了したかを示します。緑色部分が大きければ、プロセスは予想通りまたは「標準」通りに進んでいます。小さかったり、欠けている場合は、遅延や非効率を示しているかもしれません。",
+            summaryExplanation: "要約：\n" +
+                "青色部分：それぞれの配分期間中で完了した作業量を示します。\n" +
+                "緑色部分：計算された配分内で完了した作業量を示し、効率と予想との一致を示します。\n" +
+                "これらの色分けされたセグメントを追跡することによって、レポートは各ノードのワークフロー内での時間と効率に関する洞察を提供します。"
+
+
         }
     }
 };
@@ -971,7 +1041,24 @@ export const FrenchText: TextInterface = {
             orderIsAcceptable: "Ordre acceptable",
             orderIsNotAcceptable: "Ordre non acceptable",
             executionOrderLabel: "Ordre d'exécution : ",
-            exportToPDF: "exporter au format PDF"
+            exportToPDF: "exporter au format PDF",
+            exportBackgroundGraphMessage: "Veuillez cocher la case \"Graphique d'arrière-plan\" lors de l'exportation.",
+            progressExplanationTitle: "Explication de la barre de progression",
+            offsetProgressExplanation: "1. Barre de progression Offset :\n" +
+                "La portion bleue : Représente la progression du travail réel effectué pendant la période \"Offset\". C'est le temps passé à travailler sur le nœud pendant sa période de \"quota offset\", excluant les retards ou les traitements.\n" +
+                "La portion verte : Indique la progression du travail réel effectué pendant la période du \"Quota Standard\". La portion verte reflète la quantité de travail effectuée par rapport au quota standard du nœud. Plus la portion verte est grande, plus le processus se rapproche de l'atteinte du quota standard.",
+            standardProgressExplanation: "2. Barre de progression Standard :\n" +
+                "La portion bleue : Représente la progression du travail réel effectué pendant la période du quota standard pour le nœud. Cela ressemble à la portion bleue de la barre Offset mais se concentre sur le temps de quota standard.\n" +
+                "La portion verte : Indique combien de travail a été réalisé dans le quota calculé ou attendu, en tenant compte du temps de traitement. Cela est calculé en utilisant la durée totale du travail effectué et le quota standard total, y compris les ajustements pour le traitement ou les temps supplémentaires.",
+            blueGreenExplanation: "Indicateurs et Signification :\n" +
+                "Les segments bleus (dans les barres de progression Offset et Standard) fournissent un indice visuel de la quantité de travail effectuée, en tenant compte uniquement du travail effectué dans la \"période de travail réelle\".\n" +
+                "Les segments verts montrent combien de travail a été effectué par rapport à l'ensemble du temps prévu (qu'il s'agisse du quota standard ou du quota offset). Un plus grand segment vert signifie que le processus avance selon le taux prévu ou \"standard\", tandis que des segments verts plus petits ou manquants peuvent indiquer des retards ou une inefficacité.",
+            summaryExplanation: "Résumé :\n" +
+                "Les sections bleues : Montrent le travail effectué pendant la période de quota respective.\n" +
+                "Les sections vertes : Montrent combien de travail a été effectué dans le quota calculé, indiquant l'efficacité et l'alignement avec les attentes.\n" +
+                "En suivant ces segments colorés, le rapport fournit des informations sur le temps et l'efficacité du processus d'assemblage pour chaque nœud dans le flux de travail."
+
+
         }
     }
 };
@@ -1123,7 +1210,24 @@ export const GermanText: TextInterface = {
             orderIsAcceptable: "Reihenfolge akzeptabel",
             orderIsNotAcceptable: "Reihenfolge nicht akzeptabel",
             executionOrderLabel: "Ausführungsreihenfolge: ",
-            exportToPDF: "als PDF exportieren"
+            exportToPDF: "als PDF exportieren",
+            exportBackgroundGraphMessage: "Bitte aktivieren Sie das Kontrollkästchen \"Hintergrunddiagramm\" beim Exportieren.",
+            progressExplanationTitle: "Erklärung der Fortschrittsanzeige",
+            offsetProgressExplanation: "1. Offset-Fortschrittsanzeige:\n" +
+                "Blaue Portion: Repräsentiert den Fortschritt der tatsächlichen Arbeit, die während des \"Offset\"-Zeitraums geleistet wird. Dies ist die Zeit, die mit der Arbeit am Knoten während seines \"Offset-Quoten\"-Zeitraums verbracht wird, ohne Verzögerungen oder Bearbeitung.\n" +
+                "Grüne Portion: Zeigt den Fortschritt der tatsächlichen Arbeit, die während des \"Standard\"-Quotenzeitraums erfolgt. Die grüne Portion spiegelt die Menge an Arbeit wider, die im Vergleich zum Standard-Quota des Knotens erledigt wurde. Je größer der grüne Anteil, desto näher ist der Prozess an der Erfüllung des Standard-Quotas.",
+            standardProgressExplanation: "2. Standard-Fortschrittsanzeige:\n" +
+                "Blaue Portion: Repräsentiert den Fortschritt der tatsächlichen Arbeit während des Standard-Quota-Zeitraums für den Knoten. Dies ist ähnlich wie die blaue Portion der Offset-Leiste, jedoch mit Fokus auf die Standard-Quota-Zeit.\n" +
+                "Grüne Portion: Zeigt, wie viel Arbeit innerhalb des erwarteten oder berechneten Quotas abgeschlossen wurde, einschließlich der Bearbeitungszeit. Dies wird unter Verwendung der Gesamtarbeitsdauer und des gesamten Standard-Quotas berechnet, einschließlich Anpassungen für Bearbeitung oder zusätzliche Zeit.",
+            blueGreenExplanation: "Indikatoren und Bedeutung:\n" +
+                "Blaue Segmente (in beiden Fortschrittsanzeigen, Offset und Standard) bieten eine visuelle Hilfe, um anzuzeigen, wie viel der erforderlichen Arbeit erledigt wurde, wobei nur die Arbeit berücksichtigt wird, die innerhalb der \"tatsächlichen\" Arbeitszeit stattgefunden hat.\n" +
+                "Grüne Segmente zeigen, wie viel Arbeit im Vergleich zur Gesamtzeit (ob Standard-Quota oder Offset-Quota) abgeschlossen wurde. Ein größerer grüner Abschnitt bedeutet, dass der Prozess gemäß dem erwarteten oder \"Standard\"-Tempo voranschreitet, während kleinere oder fehlende grüne Abschnitte auf Verzögerungen oder Ineffizienz hinweisen können.",
+            summaryExplanation: "Zusammenfassung:\n" +
+                "Blaue Abschnitte: Zeigen die Arbeit an, die während des jeweiligen Quotenzeitraums abgeschlossen wurde.\n" +
+                "Grüne Abschnitte: Zeigen, wie viel Arbeit innerhalb des berechneten Quotas abgeschlossen wurde, was auf Effizienz und Übereinstimmung mit den Erwartungen hinweist.\n" +
+                "Durch die Verfolgung dieser farbigen Abschnitte liefert der Bericht Einblicke in die Zeit und Effizienz des Montageprozesses für jeden Knoten im Workflow."
+
+
         }
     }
 };
@@ -1277,7 +1381,24 @@ export const RussianText: TextInterface = {
             orderIsAcceptable: "Порядок приемлем",
             orderIsNotAcceptable: "Порядок неприемлем",
             executionOrderLabel: "Порядок выполнения: ",
-            exportToPDF: "экспорт в PDF"
+            exportToPDF: "экспорт в PDF",
+            exportBackgroundGraphMessage: "Пожалуйста, установите флажок \"Фоновая графика\" при экспорте.",
+            progressExplanationTitle: "Пояснение к индикатору прогресса",
+            offsetProgressExplanation: "1. Индикатор прогресса Offset:\n" +
+                "Синяя часть: Представляет прогресс фактической работы, выполняемой в период \"Offset\". Это время, потраченное на работу с узлом в его периоде \"Offset квоты\", без учета обработки или задержек.\n" +
+                "Зеленая часть: Указывает прогресс реальной работы, выполняемой в периоде \"Стандартной\" квоты. Зеленая часть отражает количество выполненной работы по сравнению со стандартной квотой для узла. Чем больше зеленая часть, тем ближе процесс к выполнению стандартной квоты.",
+            standardProgressExplanation: "2. Индикатор прогресса Standard:\n" +
+                "Синяя часть: Представляет прогресс фактической работы в периоде стандартной квоты для узла. Это похоже на синюю часть индикатора Offset, но с фокусом на стандартное время квоты.\n" +
+                "Зеленая часть: Указывает, сколько работы было выполнено в пределах ожидаемой или вычисленной квоты, включая время на обработку. Это вычисляется с использованием общей продолжительности выполненной работы и общей стандартной квоты, включая корректировки для обработки или дополнительного времени.",
+            blueGreenExplanation: "Индикаторы и их значение:\n" +
+                "Синие сегменты (в обоих индикаторах, Offset и Standard) предоставляют визуальное представление о том, сколько работы было выполнено, с учетом только работы, которая была выполнена в \"реальное\" рабочее время.\n" +
+                "Зеленые сегменты показывают, сколько работы было выполнено относительно общей ожидаемой времени (стандартной или offset квоты). Большая зеленая часть означает, что процесс продвигается в соответствии с ожидаемым или \"стандартным\" темпом, в то время как меньшие или отсутствующие зеленые сегменты могут указывать на задержки или неэффективность.",
+            summaryExplanation: "Резюме:\n" +
+                "Синие сегменты: Показывают выполненную работу в пределах соответствующего периода квоты.\n" +
+                "Зеленые сегменты: Показывают, сколько работы было выполнено в пределах вычисленной квоты, что указывает на эффективность и соответствие ожиданиям.\n" +
+                "Отслеживание этих цветных сегментов позволяет получать информацию о времени и эффективности процесса сборки для каждого узла в рабочем процессе."
+
+
         }
     }
 };
@@ -1431,7 +1552,24 @@ export const KoreanText: TextInterface = {
             orderIsAcceptable: "순서 허용",
             orderIsNotAcceptable: "순서 불가",
             executionOrderLabel: "실행 순서: ",
-            exportToPDF: "PDF로 내보내기"
+            exportToPDF: "PDF로 내보내기",
+            exportBackgroundGraphMessage: "내보낼 때 \"배경 그래프\" 체크박스를 선택하세요.",
+            progressExplanationTitle: "진행률 바 설명",
+            offsetProgressExplanation: "1. 오프셋 진행률 바:\n" +
+                "파란색 부분: \"오프셋\" 시간대 동안 실제 작업이 진행된 정도를 나타냅니다. 이는 \"오프셋 할당량\" 기간 동안 노드에서 수행한 작업 시간으로, 처리나 지연은 제외됩니다.\n" +
+                "초록색 부분: \"표준\" 할당량 기간 동안 실제 작업의 진행 정도를 나타냅니다. 초록색 부분은 노드의 표준 할당량에 비례하여 완료된 작업 양을 나타냅니다. 초록색 부분이 클수록 프로세스가 표준 할당량을 충족하는 데 더 가까워집니다.",
+            standardProgressExplanation: "2. 표준 진행률 바:\n" +
+                "파란색 부분: 노드의 표준 할당량 기간 동안 실제 작업이 진행된 정도를 나타냅니다. 이는 오프셋 바의 파란색 부분과 유사하지만 표준 할당량 시간에 초점을 맞춥니다.\n" +
+                "초록색 부분: 예상된 또는 계산된 할당량 내에서 완료된 작업량을 나타냅니다. 처리 시간을 포함하여 총 작업 시간과 총 표준 할당량을 사용하여 계산됩니다.",
+            blueGreenExplanation: "지표 및 의미:\n" +
+                "파란색 부분(오프셋 및 표준 진행률 바 모두)은 \"실제\" 작업 시간 내에서 완료된 작업량에 대한 시각적 단서를 제공합니다.\n" +
+                "초록색 부분은 전체 예상 시간(표준 할당량 또는 오프셋 할당량)과 비교하여 완료된 작업량을 나타냅니다. 초록색 부분이 크면 프로세스가 예상된 또는 \"표준\" 속도로 진행되고 있다는 의미이며, 초록색 부분이 작거나 없으면 지연이나 비효율성을 나타낼 수 있습니다.",
+            summaryExplanation: "요약:\n" +
+                "파란색 부분: 해당 할당량 기간 동안 완료된 작업을 나타냅니다.\n" +
+                "초록색 부분: 계산된 할당량 내에서 완료된 작업량을 나타내며, 효율성 및 예상과의 일치를 나타냅니다.\n" +
+                "이 색상 구간을 추적하여 보고서는 각 노드의 작업 흐름에서 시간과 효율성에 대한 통찰력을 제공합니다."
+
+
         }
     }
 };
@@ -1585,7 +1723,24 @@ export const ArabicText: TextInterface = {
             orderIsAcceptable: "الترتيب مقبول",
             orderIsNotAcceptable: "الترتيب غير مقبول",
             executionOrderLabel: "ترتيب التنفيذ: ",
-            exportToPDF: "التصدير إلى PDF"
+            exportToPDF: "التصدير إلى PDF",
+            exportBackgroundGraphMessage: "يرجى تحديد مربع الاختيار \"الرسم البياني الخلفي\" عند التصدير.",
+            progressExplanationTitle: "شرح شريط التقدم",
+            offsetProgressExplanation: "1. شريط تقدم الإزاحة:\n" +
+                "الجزء الأزرق: يمثل تقدم العمل الفعلي الذي يحدث خلال فترة \"الإزاحة\". هذا هو الوقت الذي تم قضاؤه في العمل على العقدة خلال فترة \"حصة الإزاحة\"، باستثناء أي تأخير أو معالجة.\n" +
+                "الجزء الأخضر: يشير إلى تقدم العمل الفعلي الذي يحدث خلال فترة \"الحصة القياسية\". الجزء الأخضر يعكس كمية العمل المنجز مقارنة بالحصة القياسية للعقدة. كلما كانت المسافة الخضراء أكبر، كلما اقتربت العملية من تحقيق الحصة القياسية.",
+            standardProgressExplanation: "2. شريط تقدم القياسي:\n" +
+                "الجزء الأزرق: يمثل تقدم العمل الفعلي خلال فترة الحصة القياسية للعقدة. هذا يشبه الجزء الأزرق في شريط الإزاحة ولكن يركز على وقت الحصة القياسية.\n" +
+                "الجزء الأخضر: يشير إلى مقدار العمل الذي تم إنجازه ضمن الحصة المتوقعة أو المحسوبة، مع مراعاة وقت المعالجة. يتم حساب هذا باستخدام إجمالي مدة العمل المنجز والإجمالي للحد الأدنى للوقت القياسي، بما في ذلك التعديلات للمعالجة أو الوقت الإضافي.",
+            blueGreenExplanation: "المؤشرات والمعاني:\n" +
+                "الأجزاء الزرقاء (في كلا من شريط الإزاحة والقياسي) توفر إشارة مرئية عن مقدار العمل الذي تم إنجازه، مع مراعاة العمل الذي تم فقط خلال \"الوقت الفعلي\" للعمل.\n" +
+                "الأجزاء الخضراء تظهر مقدار العمل الذي تم إنجازه بالنسبة إلى الوقت المتوقع الكلي (سواء كان حصة قياسية أو حصة إزاحة). الجزء الأخضر الأكبر يعني أن العملية تتقدم وفقًا للمعدل المتوقع أو \"القياسي\"، بينما تشير الأجزاء الخضراء الأصغر أو المفقودة إلى التأخيرات أو عدم الكفاءة.",
+            summaryExplanation: "الملخص:\n" +
+                "الأجزاء الزرقاء: تعرض العمل الذي تم إنجازه خلال الفترة المخصصة.\n" +
+                "الأجزاء الخضراء: تعرض مقدار العمل الذي تم إنجازه ضمن الحصة المحسوبة، مما يشير إلى الكفاءة والتوافق مع التوقعات.\n" +
+                "من خلال متابعة هذه الأقسام الملونة، يوفر التقرير رؤى حول الوقت وكفاءة عملية التجميع لكل عقدة في سير العمل."
+
+
         }
     }
 };
