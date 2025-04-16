@@ -53,7 +53,7 @@ const SiderComponent: React.FC<SiderProps> = ({ progressBars }) => {
         }
         activeIndex = parseInt(activeIndex)
         console.log(activeIndex)
-        if (activeIndex !== -1 && containerRef.current && progressRefs.current[activeIndex]) {
+        if (activeIndex !== -1 && activeIndex !== progressBars.length -1 && containerRef.current && progressRefs.current[activeIndex]) {
             console.log('scrolling')
             const containerRect = containerRef.current.getBoundingClientRect();
             const progressRect = progressRefs.current[activeIndex]!.getBoundingClientRect();

@@ -75,17 +75,45 @@ export interface AllConfigs {
  *-----------------------------------*/
 
 /**
+ * test connection (GET /management/ping)
+ * @returns true if success, false otherwise.
+ */
+export async function ping(): Promise<boolean> {
+    let flag= true;
+    await (axios.get<string>(host + "/management/ping", {
+        responseType: "text",
+    }).catch((err) => {
+        console.log(err)
+        flag = false
+    }).then((res) => flag = flag && Object.prototype.hasOwnProperty.call(res, "data") && res?.data === "pa"));
+    console.log(flag);
+    return flag;
+}
+
+/**
+ * test connection (GET /ping-rf)
+ * @returns true if success, false otherwise.
+ */
+export async function pingRf(test_host: string, port: string): Promise<boolean> {
+    let flag= true;
+    await (axios.post<string>(host + "/ping-rf", {host: test_host, port: port}, {
+        responseType: "text",
+    }).catch((err) => {
+        console.log(err)
+        flag = false
+    }).then((res) => flag = flag && Object.prototype.hasOwnProperty.call(res, "data") && res?.data === "pa"));
+    console.log(flag);
+    return flag;
+}
+
+/**
  * 获取全部配置 (GET /config/all)
  * @returns 后端返回的 JSON（已经作为对象解析）
  */
 export async function getAllConfigs(): Promise<AllConfigs> {
     const response = await axios.get<string>(host + "/config/all", {
-        // 后端返回的是 JSON 字符串，这里也可以让后端直接返回对象
-        // 如果后端实际上是纯文本，请手动 JSON.parse
         responseType: "text",
     });
-    // 假设后端返回的是一个 JSON 字符串，需要手动 JSON.parse
-    // 如果后端已经返回对象，可省略这一步
     return JSON.parse(response.data) as AllConfigs;
 }
 

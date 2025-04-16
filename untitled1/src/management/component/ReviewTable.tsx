@@ -34,7 +34,7 @@ const ReviewTable: React.FC = () => {
 
     const [loadingLog, setLoadingLog] = useState<StateMachineLogStrings | undefined>(undefined);
     const [timelineData, setTimelineData] = useState<
-        [AxiosResponse<Map<number, PresetNode>, unknown>, AxiosResponse<Map<number, PresetNode>, unknown>]
+         AxiosResponse<Map<number, PresetNode>, unknown>
         | undefined
     >(undefined);
     const [showModal, setShowModal] = useState<boolean>(false);
@@ -44,11 +44,10 @@ const ReviewTable: React.FC = () => {
         if (!logStrings) return;
         setLoadingLog(logStrings);
         Promise.all([
-            axios.get(`${host}/review/state-machine-logs/${logStrings.id}/timeline`),
-            axios.get(`${host}/review/state-machine-logs/${logStrings.id}/filtered-timeline`)
+            axios.get(`${host}/review/state-machine-logs/${logStrings.id}/timeline`)
         ])
             .then(r => {
-                setTimelineData(r);
+                setTimelineData(r[0]);
                 setShowModal(true);
             })
             .catch(err => {

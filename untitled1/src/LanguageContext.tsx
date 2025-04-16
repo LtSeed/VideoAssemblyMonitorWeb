@@ -1,11 +1,15 @@
-//
-// LanguageContext.tsx
-//
-// 提供一个上下文，用于在全局范围管理当前语言
-//
-
 import React, { createContext, useContext, useState, ReactNode } from "react";
-import { TextInterface, ChineseText, EnglishText } from "./language.ts";
+import {
+    TextInterface,
+    ChineseText,
+    EnglishText,
+    JapaneseText,
+    FrenchText,
+    GermanText,
+    RussianText,
+    KoreanText,
+    ArabicText, TraditionalChineseText
+} from "./language.ts";
 
 interface LanguageContextProps {
     language: TextInterface;
@@ -15,7 +19,7 @@ interface LanguageContextProps {
 
 const defaultContextValue: LanguageContextProps = {
     language: ChineseText,
-    currentLangKey: "zh",
+    currentLangKey: "en",
     changeLanguage: () => {},
 };
 
@@ -30,9 +34,23 @@ interface LanguageProviderProps {
 }
 
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
-    const [langKey, setLangKey] = useState<string>("zh");
+    const [langKey, setLangKey] = useState<string>("en");
 
-    const language = langKey === "zh" ? ChineseText : EnglishText;
+    // 定义语言映射对象
+    const languages: { [key: string]: TextInterface } = {
+        zh: ChineseText,
+        zh_tr: TraditionalChineseText,
+        en: EnglishText,
+        ja: JapaneseText,
+        fr: FrenchText,
+        de: GermanText,
+        ru: RussianText,
+        ko: KoreanText,
+        ar: ArabicText,
+    };
+
+    // 根据当前 langKey 返回对应的语言文案，默认使用中文
+    const language = languages[langKey] || ChineseText;
 
     const changeLanguage = (newLangKey: string) => {
         setLangKey(newLangKey);

@@ -75,7 +75,7 @@ export const ModelSettingsPage: React.FC = () => {
             fetchModels().then((models)=>{
                 if (models == undefined) return;
                 setModelList(models);
-                if (models.length > 0) {
+                if (models.length > 0 && selectedModel === "") {
                     setSelectedModel(models[0]); // 默认选中第一个模型
                 }
             })
@@ -89,7 +89,7 @@ export const ModelSettingsPage: React.FC = () => {
             clearInterval(intervalId);
         };
 
-    }, []);
+    }, [selectedModel]);
 
     // 选择行
     const rowSelection = {
@@ -176,7 +176,7 @@ export const ModelSettingsPage: React.FC = () => {
             const updatedData = data.map((item) => {
                 const change = applyChanges.find((c) => c.presetName === item.name);
                 if (change) {
-                    return { ...item, currentModel: change.newModel as "eoid" | "yolo" | "" };
+                    return { ...item, currentModel: change.newModel };
                 }
                 return item;
             });

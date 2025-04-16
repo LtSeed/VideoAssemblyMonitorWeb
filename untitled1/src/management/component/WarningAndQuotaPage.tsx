@@ -151,7 +151,7 @@ export const WarningAndQuotaPage: React.FC = () => {
     const handleSetAllUpPercent = () => {
         const updated = quotaData.map((row) => ({
             ...row,
-            upPercent: globalUpPercent,
+            up_percent: globalUpPercent,
         }));
         setQuotaData(updated);
         message.success("Up shift percent updated for all steps");
@@ -161,7 +161,7 @@ export const WarningAndQuotaPage: React.FC = () => {
     const handleSetAllDownPercent = () => {
         const updated = quotaData.map((row) => ({
             ...row,
-            downPercent: globalDownPercent,
+            down_percent: globalDownPercent,
         }));
         setQuotaData(updated);
         message.success("Down shift percent updated for all steps");
@@ -175,7 +175,7 @@ export const WarningAndQuotaPage: React.FC = () => {
             average_time: s.average_time,
             std_dev: s.std_dev,
             upper: s.average_time + factor * s.std_dev,
-            lower: s.average_time - factor * s.std_dev,
+            lower: (s.average_time - factor * s.std_dev) < 0 ? 0 : (s.average_time - factor * s.std_dev),
         }));
         setConfidenceData(newConfidenceData);
     };
@@ -246,8 +246,8 @@ export const WarningAndQuotaPage: React.FC = () => {
     const quotaColumns = [
         {
             title: language.warningAndQuota.stepColumn,
-            dataIndex: "stepName",
-            key: "stepName",
+            dataIndex: "step_name",
+            key: "step_name",
         },
         {
             title: language.warningAndQuota.quotaTime,
@@ -347,17 +347,17 @@ export const WarningAndQuotaPage: React.FC = () => {
     const confidenceColumns = [
         {
             title: language.warningAndQuota.stepColumn,
-            dataIndex: "stepName",
-            key: "stepName",
+            dataIndex: "step_name",
+            key: "step_name",
         },
         {
             title: language.warningAndQuota.averageTimeColumn,
-            dataIndex: "averageTime",
-            key: "averageTime",
+            dataIndex: "average_time",
+            key: "average_time",
         },
         {
             title: language.warningAndQuota.stdDevColumn,
-            dataIndex: "stdDev",
+            dataIndex: "std_dev",
             key: "stdDev",
         },
         {

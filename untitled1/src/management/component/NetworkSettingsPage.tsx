@@ -5,24 +5,29 @@
 // 提供测试按钮
 //
 
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import { Input, InputNumber, Button, Form, message } from "antd";
 import { useLanguage } from "../../LanguageContext";
 import { Typography } from 'antd';
-import {getAllConfigs, HostAndPort, updatePythonConfig, updateRoboflowConfig} from "../services/configAPI.ts";
+import {getAllConfigs, HostAndPort, ping, pingRf, updateRoboflowConfig} from "../services/configAPI.ts";
 
 const { Title } = Typography;
 
 export const NetworkSettingsPage: React.FC = () => {
     const { language } = useLanguage();
     const [form] = Form.useForm();
+    const [pingBe, setPingBe] = useState<boolean>(false);
+    const [beTested, setBeTested] = useState<boolean>(false);
+    const [beTestResult, setBeTestResult] = useState<boolean>(false);
+
+    const [pingRoboflow, setPingRoboflow] = useState<boolean>(false);
+    const [rfTested, setRfTested] = useState<boolean>(false);
+    const [rfTestResult, setRfTestResult] = useState<boolean>(false);
 
     // 示例：管理界面、Eoid、Roboflow 的 host / port
     interface NetworkFormValues {
         managementHost: string;
         managementPort: number;
-        eoidHost: string;
-        eoidPort: number;
         roboflowHost: string;
         roboflowPort: number;
     }
@@ -30,8 +35,6 @@ export const NetworkSettingsPage: React.FC = () => {
     const initialValues: NetworkFormValues = {
         managementHost: "http://localhost",
         managementPort: 8080,
-        eoidHost: "http://localhost",
-        eoidPort: 5000,
         roboflowHost: "http://localhost",
         roboflowPort: 9001,
     };
@@ -58,24 +61,10 @@ export const NetworkSettingsPage: React.FC = () => {
         fetchConfigs();
     }, [form]);
 
-    const handleTest = (field: "management" | "eoid" | "roboflow") => {
-        const host = form.getFieldValue(field + "Host");
-        const port = form.getFieldValue(field + "Port");
-        // 这里可调用后端某个测试接口 /ping?host=&port= ，或者直接在前端做 fetch 试探
-        // 演示仅做提示
-        message.info(`Testing ${host} for port ${port} ... (示例)`);
-    };
-
     const handleFinish = async (values: NetworkFormValues) => {
         try {
-            // 1) 更新 Eoid (Python)
-            const eoidRequest: HostAndPort = {
-                host: values.eoidHost,
-                port: String(values.eoidPort),
-            };
-            await updatePythonConfig(eoidRequest);
 
-            // 2) 更新 Roboflow
+            // 1) 更新 Roboflow
             const roboflowRequest: HostAndPort = {
                 host: values.roboflowHost,
                 port: String(values.roboflowPort),
@@ -88,6 +77,26 @@ export const NetworkSettingsPage: React.FC = () => {
             message.error("Failed to save network settings: " + String(error));
         }
     };
+
+    function handleTestBackend() {
+        setPingBe(true);
+
+        ping().then((result) => {
+            setBeTested(true);
+            setBeTestResult(result);
+            setPingBe(false);
+        })
+    }
+
+    function handleTestRoboflow() {
+        setPingRoboflow(true);
+
+        pingRf(form.getFieldValue("roboflowHost"), form.getFieldValue("roboflowPort")).then((result) => {
+            setRfTested(true);
+            setRfTestResult(result);
+            setPingRoboflow(false);
+        })
+    }
 
     return (
         <div style={{ marginTop: 36, padding: "24px 60px" }}>
@@ -119,32 +128,10 @@ export const NetworkSettingsPage: React.FC = () => {
                 <Form.Item>
                     <Button
                         style={{ marginRight: 24 }}
-                        onClick={() => handleTest("management")}
-                    >
-                        {language.network.testButton}
-                    </Button>
-                </Form.Item>
-
-                <Form.Item
-                    label={language.network.eoidHostLabel}
-                    name="eoidHost"
-                    rules={[{ required: true, message: "Please input Eoid host" }]}
-                >
-                    <Input style={{ width: 300 }} />
-                </Form.Item>
-
-                <Form.Item
-                    label={language.network.eoidPortLabel}
-                    name="eoidPort"
-                    rules={[{ required: true, message: "Please input Eoid port" }]}
-                >
-                    <InputNumber style={{ width: 300 }} />
-                </Form.Item>
-
-                <Form.Item>
-                    <Button
-                        style={{ marginRight: 24 }}
-                        onClick={() => handleTest("eoid")}
+                        onClick={() => handleTestBackend()}
+                        loading={pingBe}
+                        variant={beTested ? "filled" : undefined}
+                        color={beTested ? (beTestResult ? 'cyan' : 'danger') : undefined}
                     >
                         {language.network.testButton}
                     </Button>
@@ -169,7 +156,10 @@ export const NetworkSettingsPage: React.FC = () => {
                 <Form.Item>
                     <Button
                         style={{ marginRight: 24 }}
-                        onClick={() => handleTest("roboflow")}
+                        onClick={() => handleTestRoboflow()}
+                        loading={pingRoboflow}
+                        variant={rfTested ? "filled" : undefined}
+                        color={rfTested ? (rfTestResult ? 'cyan' : 'danger') : undefined}
                     >
                         {language.network.testButton}
                     </Button>

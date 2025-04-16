@@ -6,7 +6,7 @@ import {ConfigProvider, Menu, MenuProps} from "antd";
 import {DatabaseOutlined, SettingOutlined, BarChartOutlined} from '@ant-design/icons';
 import SystemInfo from "./SystemInfo.tsx";
 import ReviewTable from "./ReviewTable.tsx";
-import {CommonPage} from "./CommonPage.tsx";
+import {GeneralSettingPage} from "./GeneralSettingPage.tsx";
 import {NetworkSettingsPage} from "./NetworkSettingsPage.tsx";
 import {WarningAndQuotaPage} from "./WarningAndQuotaPage.tsx";
 import {ModelSettingsPage} from "./ModelSettingsPage.tsx";
@@ -27,7 +27,7 @@ const MenuSider: React.FC<MenuSiderProps> = ({setCurrent: setPage}) => {
     const pages: Map<string, React.JSX.Element> = new Map<string, React.JSX.Element>();
     pages.set('stu', <SystemInfo />);
     pages.set('wl', <ReviewTable />);
-    pages.set('gen', <CommonPage />);
+    pages.set('gen', <GeneralSettingPage />);
     pages.set('network', <NetworkSettingsPage />);
     pages.set('warn', <WarningAndQuotaPage />);
     pages.set('model', <ModelSettingsPage />);

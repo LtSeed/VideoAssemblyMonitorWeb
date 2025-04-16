@@ -48,7 +48,7 @@ const ContentWhenCapturing: React.FC<Props> = ({
                 const l: ProgressBar[] = response.data.map((bar: ProgressBar) => {
                     return new ProgressBar(
                         bar.index,
-                        bar.name,
+                        bar.name == "Idle"? "Handling": bar.name,
                         bar.quota,
                         bar.parent,
                         bar.progress,
